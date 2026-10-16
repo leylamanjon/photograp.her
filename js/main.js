@@ -213,22 +213,56 @@
 
   /* ---------- Cursor "Ver" ---------- */
   var cursor = document.getElementById('cursor');
-  if (matchMedia('(hover:hover) and (pointer:fine)').matches && !reduced) {
-    var cx = 0, cy = 0, tx = 0, ty = 0, raf = null;
+  if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
+    document.documentElement.classList.add('has-cursor');
+    var cx = 0, cy = 0, tx = 0, ty = 0, raf = null, seen = false;
+    var LABEL = '.row, .proyecto, .noticia, .next, .card:has(a.btn), [data-zoom]';
+    var GROW = 'a[href], button:not(:disabled), [role="button"], summary, label, .hslide, ' + LABEL;
+    var TEXTY = 'input:not([type="checkbox"]):not([type="radio"]), textarea, select';
     function loop() {
-      cx += (tx - cx) * 0.2; cy += (ty - cy) * 0.2;
+      var k = reduced ? 1 : 0.28;
+      cx += (tx - cx) * k; cy += (ty - cy) * k;
       cursor.style.transform = 'translate3d(' + cx + 'px,' + cy + 'px,0)';
       raf = (Math.abs(tx - cx) > .1 || Math.abs(ty - cy) > .1) ? requestAnimationFrame(loop) : null;
     }
     document.addEventListener('mousemove', function (e) {
       tx = e.clientX; ty = e.clientY;
-      var t = e.target.closest && e.target.closest('.row, .proyecto, .noticia, .next, [data-zoom]');
-      if (t) { cursor.textContent = t.matches('[data-zoom]') ? 'Ampliar' : 'Ver'; if (!cursor.classList.contains('is-on')) { cx = tx; cy = ty; } }
-      cursor.classList.toggle('is-on', !!t);
+      if (!seen) { seen = true; cx = tx; cy = ty; }
+      var el = e.target.closest ? e.target : null;
+      var typing = el && el.closest(TEXTY);
+      var lab = !typing && el && el.closest(LABEL);
+      var grow = !typing && el && el.closest(GROW);
+      if (lab) cursor.textContent = lab.matches('[data-zoom]') ? 'Ampliar' : 'Ver';
+      cursor.classList.toggle('is-label', !!lab);
+      cursor.classList.toggle('is-grow', !!grow && !lab);
+      cursor.classList.toggle('is-hidden', !!typing);
+      cursor.classList.add('is-on');
       if (!raf) raf = requestAnimationFrame(loop);
     });
-    document.addEventListener('mouseleave', function () { cursor.classList.remove('is-on'); });
+    document.addEventListener('mousedown', function () { cursor.classList.add('is-down'); });
+    document.addEventListener('mouseup', function () { cursor.classList.remove('is-down'); });
+    document.documentElement.addEventListener('mouseleave', function () { cursor.classList.remove('is-on'); });
+    document.documentElement.addEventListener('mouseenter', function () { cursor.classList.add('is-on'); });
   }
+
+  /* ---------- Idioma (ES / EN) ---------- */
+  var langBtns = Array.prototype.slice.call(document.querySelectorAll('[data-lang]'));
+  var i18n = Array.prototype.slice.call(document.querySelectorAll('[data-en]'));
+  var i18nAttr = Array.prototype.slice.call(document.querySelectorAll('[data-en-placeholder]'));
+  i18n.forEach(function (n) { n.dataset.es = n.textContent; });
+  i18nAttr.forEach(function (n) { n.dataset.esPlaceholder = n.getAttribute('placeholder'); });
+  function setLang(l, save) {
+    var en = l === 'en';
+    document.documentElement.lang = en ? 'en' : 'es';
+    /* el contenido de las páginas sigue en español hasta tener las traducciones */
+    if (en) mainEl.setAttribute('lang', 'es'); else mainEl.removeAttribute('lang');
+    i18n.forEach(function (n) { n.textContent = en ? n.dataset.en : n.dataset.es; });
+    i18nAttr.forEach(function (n) { n.setAttribute('placeholder', en ? n.dataset.enPlaceholder : n.dataset.esPlaceholder); });
+    langBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lang === (en ? 'en' : 'es'))); });
+    if (save) { try { localStorage.setItem('ph-lang', en ? 'en' : 'es'); } catch (e) {} }
+  }
+  langBtns.forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.lang, true); }); });
+  try { if (localStorage.getItem('ph-lang') === 'en') setLang('en', false); } catch (e) {}
 
   /* ---------- Visor de imágenes ---------- */
   var lb = document.getElementById('lb'), lbCount = document.getElementById('lb-count');
