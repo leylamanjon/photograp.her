@@ -629,6 +629,28 @@ html{scroll-padding-top:96px}
 .proyecto:has(a:focus-visible),.noticia:has(a:focus-visible),.card:has(a.btn:focus-visible){outline:2px solid var(--negro);outline-offset:4px}
 .proyecto a.btn:focus-visible,.noticia a.btn:focus-visible,.card a.btn:focus-visible{outline:none}
 .proyecto a.btn:active,.noticia a.btn:active,.card a.btn:active{opacity:1}
+
+/* ===== Header: blanco sólido, sin blur ni línea ===== */
+.header,.header.is-scrolled{background:var(--blanco);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none;border:0}
+
+/* ===== Marco de cámara (visor): esquinas en fotos, tarjetas, hero y loader ===== */
+.loader::before{content:"";position:absolute;inset:32px;pointer-events:none;background:linear-gradient(#151515,#151515) left 0px top 0px / 28px 1px no-repeat,linear-gradient(#151515,#151515) right 0px top 0px / 28px 1px no-repeat,linear-gradient(#151515,#151515) left 0px bottom 0px / 28px 1px no-repeat,linear-gradient(#151515,#151515) right 0px bottom 0px / 28px 1px no-repeat,linear-gradient(#151515,#151515) left 0px top 0px / 1px 28px no-repeat,linear-gradient(#151515,#151515) right 0px top 0px / 1px 28px no-repeat,linear-gradient(#151515,#151515) left 0px bottom 0px / 1px 28px no-repeat,linear-gradient(#151515,#151515) right 0px bottom 0px / 1px 28px no-repeat;animation:vf 1.3s var(--ease) both}
+.loader.is-done::before{opacity:0;transition:opacity .3s}
+@keyframes vf{from{inset:104px;opacity:0}to{inset:32px;opacity:1}}
+@media (max-width:700px){.loader::before{inset:20px}@keyframes vf{from{inset:64px;opacity:0}to{inset:20px;opacity:1}}}
+@media (prefers-reduced-motion:reduce){.loader::before{animation:none}}
+
+/* ===== Hero: minúsculas en las palabras en cursiva ===== */
+.hero__title em{text-transform:none}
+
+/* ===== Ritmo editorial: foto a sangre entre bloques ===== */
+.band-photo{padding:0;margin:0}
+.wrap:has(+.band-photo){padding-bottom:128px}
+.band-photo+.wrap,.band-photo+.band .wrap{padding-top:128px}
+
+
+/* ===== Parallax en fotos decorativas (no en cards) ===== */
+.ph.plx::before{inset:-24% 0;transform:translate3d(0,var(--py,0px),0);transition:none;will-change:transform}
 </style>
 </head>
 
@@ -745,6 +767,7 @@ html{scroll-padding-top:96px}
     </div>
   </section>
 
+  <section class="rhy-wrap band-photo" aria-hidden="true"><div class="rhy rhy--bleed"><div class="ph" style="aspect-ratio:21/9"></div></div></section>
   <section class="wrap wrap--128 stack g64">
     <h2 class="h2 center">¿Cómo trabajamos?</h2>
     <ul class="valores">
@@ -833,6 +856,7 @@ html{scroll-padding-top:96px}
     </div>
   </section>
 
+  <section class="rhy-wrap band-photo" aria-hidden="true"><div class="rhy rhy--bleed"><div class="ph" style="aspect-ratio:21/9"></div></div></section>
   <section class="wrap">
     <ul class="valores">
       <li class="valor"><svg class="ico ico--48" aria-hidden="true" focusable="false"><use href="#i-zoom_out_map"/></svg><h2 class="h3">Propósito</h2>
@@ -912,6 +936,7 @@ html{scroll-padding-top:96px}
     </div>
   </section>
 
+  <section class="rhy-wrap band-photo" aria-hidden="true"><div class="rhy rhy--bleed"><div class="ph" style="aspect-ratio:21/9"></div></div></section>
   <div class="band"><section class="wrap wrap--128 stack g64">
     <div class="stack g8 intro"><h2 class="h2">Servicios</h2>
       <p class="body">Acompañamos a las instituciones en todo el ciclo del proyecto, desde la formulación hasta la implementación, con experiencia en convocatorias públicas y procesos culturales complejos.</p></div>
@@ -972,6 +997,7 @@ html{scroll-padding-top:96px}
     </div>
   </section>
 
+  <section class="rhy-wrap band-photo" aria-hidden="true"><div class="rhy rhy--bleed"><div class="ph" style="aspect-ratio:21/9"></div></div></section>
   <div class="band"><section class="wrap wrap--128 stack g64">
     <div class="stack g8 center" style="max-width:864px;margin-inline:auto"><h2 class="h2">Ofrecemos servicios integrales en diferentes áreas</h2>
       <p class="body">En photograp.her contamos con un equipo multidisciplinario de profesionales altamente especializadas, comprometidas con la excelencia y la innovación. Ofrecemos servicios integrales que abarcan distintas áreas estratégicas, brindando soluciones creativas y personalizadas que se adaptan a las necesidades específicas de cada proyecto.</p></div>
@@ -1185,6 +1211,7 @@ html{scroll-padding-top:96px}
     </div>
   </section>
 
+  <section class="rhy-wrap band-photo" aria-hidden="true"><div class="rhy rhy--bleed"><div class="ph" style="aspect-ratio:21/9"></div></div></section>
   <div class="band"><section class="wrap wrap--128 stack g64">
     <div class="stack g8 center" style="max-width:864px;margin-inline:auto"><h2 class="h2">Servicios que ofrecemos</h2>
       <p class="body">En photograp.her contamos con un equipo multidisciplinario de profesionales altamente especializadas, comprometidas con la excelencia y la innovación. Ofrecemos servicios integrales que abarcan distintas áreas estratégicas, brindando soluciones creativas y personalizadas que se adaptan a las necesidades específicas de cada proyecto.</p></div>
@@ -1887,6 +1914,32 @@ document.addEventListener('click',function(e){if(!drop.contains(e.target))set(fa
 window.addEventListener('hashchange',function(){set(false);});
 drop.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){set(false);});});
 window.addEventListener('scroll',function(){if(drop.classList.contains('is-open'))set(false);},{passive:true});
+})();
+</script>
+<script>
+(function () {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var els = Array.prototype.slice.call(document.querySelectorAll('.band-photo .ph, .ph.bleed'));
+  els.forEach(function (e) { e.classList.add('plx'); });
+  var tick = false;
+  function upd() {
+    tick = false;
+    var vh = innerHeight, k = innerWidth < 700 ? 0.14 : 0.24;
+    els.forEach(function (e) {
+      var r = e.getBoundingClientRect();
+      if (r.height === 0 || r.bottom < -50 || r.top > vh + 50) return;
+      var p = ((r.top + r.height / 2) - vh / 2) / (vh / 2 + r.height / 2);
+      p = Math.max(-1, Math.min(1, p));
+      e.style.setProperty('--py', (-p * r.height * k).toFixed(1) + 'px');
+    });
+  }
+  function req() { if (!tick) { tick = true; requestAnimationFrame(upd); } }
+  addEventListener('scroll', req, { passive: true });
+  addEventListener('resize', req);
+  addEventListener('hashchange', function () { setTimeout(req, 300); });
+  addEventListener('popstate', function () { setTimeout(req, 300); });
+  document.addEventListener('click', function () { setTimeout(req, 400); });
+  req();
 })();
 </script>
 </body>
