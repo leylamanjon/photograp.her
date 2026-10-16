@@ -1,0 +1,7 @@
+photograp.her web
+Abre index.html en el navegador (doble clic). Mantén las carpetas css, js e images junto a index.html.
+css/styles.css  estilos
+js/main.js      router, header, lightbox, loader, formularios
+js/dropdown.js  menú Servicios
+js/parallax.js  efecto parallax en fotos decorativas
+images/         bailarina.jpg y belita-01..19.jpg (provisionales; para cambiar una foto, reemplaza el archivo con el mismo nombre)
