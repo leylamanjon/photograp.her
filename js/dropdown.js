@@ -1,10 +1,1 @@
-(function(){var drop=document.querySelector('.drop');if(!drop)return;var b=drop.querySelector('button');
-function set(o){drop.classList.toggle('is-open',o);b.setAttribute('aria-expanded',String(o));}
-b.addEventListener('click',function(e){e.stopPropagation();set(!drop.classList.contains('is-open'));});
-drop.addEventListener('keydown',function(e){if(e.key==='Escape'&&drop.classList.contains('is-open')){e.stopPropagation();set(false);b.focus();}});
-drop.addEventListener('focusout',function(e){if(e.relatedTarget&&!drop.contains(e.relatedTarget))set(false);});
-document.addEventListener('click',function(e){if(!drop.contains(e.target))set(false);});
-window.addEventListener('hashchange',function(){set(false);});
-drop.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){set(false);});});
-window.addEventListener('scroll',function(){if(drop.classList.contains('is-open'))set(false);},{passive:true});
-})();
+(function(){var n=document.querySelector(".drop");if(!n)return;var i=n.querySelector("button");function t(e){n.classList.toggle("is-open",e),i.setAttribute("aria-expanded",String(e))}i.addEventListener("click",function(e){e.stopPropagation(),t(!n.classList.contains("is-open"))}),n.addEventListener("keydown",function(e){e.key==="Escape"&&n.classList.contains("is-open")&&(e.stopPropagation(),t(!1),i.focus())}),n.addEventListener("focusout",function(e){e.relatedTarget&&!n.contains(e.relatedTarget)&&t(!1)}),document.addEventListener("click",function(e){n.contains(e.target)||t(!1)}),window.addEventListener("hashchange",function(){t(!1)}),n.querySelectorAll("a").forEach(function(e){e.addEventListener("click",function(){t(!1)})}),window.addEventListener("scroll",function(){n.classList.contains("is-open")&&t(!1)},{passive:!0})})();

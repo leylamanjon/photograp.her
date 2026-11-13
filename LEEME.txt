@@ -1,9 +1,6 @@
-photograp.her web
-Abre index.html en el navegador (doble clic). Mantén las carpetas css, js e images junto a index.html.
-css/styles.css  estilos (al inicio: variables --b*, --c*, --pb, --n* que apuntan a las fotos; las terminadas en "s" son la versión liviana)
-js/main.js      router, header, cursor, idioma ES/EN, lightbox, loader, formularios
-js/dropdown.js  menú Servicios
-js/parallax.js  efecto parallax en fotos decorativas
-images/         WebP: NOMBRE.webp (1600 px) y NOMBRE-s.webp (800 px, miniaturas)
-Pies de foto: atributos data-cap y data-credit en cada foto de galería + figcaption.
-Logo: SVG incrustado en index.html (el punto REC parpadea). Iconos: Material Symbols (Google).
+photograp.her · sitio estático
+index.html       página única con todas las rutas (#/...)
+css/styles.css   estilos base
+css/paleta.css   paleta ampliada, botones y cards redondeados (para volver al diseño anterior, quita su <link> en index.html)
+js/              main.js, dropdown.js, parallax.js
+images/          fotos en WebP (grande y -s para tamaños chicos)
