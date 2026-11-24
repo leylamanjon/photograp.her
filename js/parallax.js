@@ -55,3 +55,19 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 /* la grilla de proyectos cambia de lista a grilla: recalcula */
 document.addEventListener("click",function(){setTimeout(run,50)});
 })();
+
+/* Header estable: no cambia de alto al hacer scroll (evita que el contenido salte) */
+(function(){var h=document.querySelector(".header");if(!h)return;
+var mo=new MutationObserver(function(){if(h.classList.contains("is-compact"))h.classList.remove("is-compact")});
+mo.observe(h,{attributes:true,attributeFilter:["class"]});h.classList.remove("is-compact")})();
+
+/* Testimonios ocultos por ahora (para volver a mostrarlos, borra este bloque) */
+(function(){
+var st=document.createElement("style");st.textContent="[data-oculto]{display:none!important}";document.head.appendChild(st);
+Array.prototype.forEach.call(document.querySelectorAll(".testimonios"),function(t){
+  var s=t.closest("section");if(!s)return;
+  s.setAttribute("data-oculto","");
+  var b=s.parentElement;
+  if(b&&b.classList.contains("band")&&b.children.length===1)b.setAttribute("data-oculto","");
+});
+})();
