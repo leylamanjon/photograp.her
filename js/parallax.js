@@ -56,10 +56,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
 document.addEventListener("click",function(){setTimeout(run,50)});
 })();
 
-/* Header estable: no cambia de alto al hacer scroll (evita que el contenido salte) */
-(function(){var h=document.querySelector(".header");if(!h)return;
-var mo=new MutationObserver(function(){if(h.classList.contains("is-compact"))h.classList.remove("is-compact")});
-mo.observe(h,{attributes:true,attributeFilter:["class"]});h.classList.remove("is-compact")})();
+/* Header: la fila superior se oculta al bajar y vuelve al subir, sin que el contenido salte */
+(function(){var st=document.createElement("style");
+st.textContent="@media(min-width:1101px){.header{transition:transform .6s var(--ease),background-color .4s var(--ease),box-shadow .4s var(--ease),min-height .5s var(--ease),padding .5s var(--ease),margin-bottom .5s var(--ease)}.header.is-compact{margin-bottom:40px}}@media(prefers-reduced-motion:reduce){.header{transition:none}}";
+document.head.appendChild(st)})();
 
 /* Testimonios ocultos por ahora (para volver a mostrarlos, borra este bloque) */
 (function(){
@@ -71,3 +71,6 @@ Array.prototype.forEach.call(document.querySelectorAll(".testimonios"),function(
   if(b&&b.classList.contains("band")&&b.children.length===1)b.setAttribute("data-oculto","");
 });
 })();
+
+/* Detalle de proyecto sin portada grande (para volver a mostrarla, borra este bloque) */
+(function(){var st=document.createElement("style");st.textContent='.view[data-route^="proyectos/"] .ph.bleed{display:none!important}';document.head.appendChild(st)})();
